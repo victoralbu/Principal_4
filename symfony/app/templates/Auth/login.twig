@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('Assets/Styles/login.css') }}"> {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('Assets/Scripts/login.js') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+{% endblock %}
+{% block login %}
+    <div>
+        <div id="button-back" class="btn btn__secondary"><p>Back</p></div>
+        <div id="register-box" class="login-box go-under">
+            <h2>Register</h2>
+            <form name="form-register" method="POST" style="justify-content: space-between">
+                <div id="div-firstname" class="user-box">
+                    <input id="firstname-field" type="text" name="firstname-field" required>
+                    <label id="label-firstname">Firstname</label>
+                </div>
+                <div id="div-lastname" class="user-box">
+                    <input id="lastname-field" type="text" name="lastname-field" required>
+                    <label id="label-lastname">Lastname</label>
+                </div>
+                <div class="user-box">
+                    <input type="text" name="username-field" required>
+                    <label>Username</label>
+                </div>
+                <div class="user-box">
+                    <input type="password" name="password-field" required>
+                    <label>Password</label>
+                </div>
+                <a id="register-button" style="float: right" class="register-button" href="#">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Register
+                </a>
+                <input id="button-submit-register-form" name="action" type="submit" style="display: none"
+                       value="register">
+            </form>
+        </div>
+        <div id="separatingSheet" class="separating-sheet"></div>
+        <div id="login-box" class="login-box  go-down">
+            <h2>Login</h2>
+            <form name="form-login" method="post" style="justify-content: space-between">
+                <div class="user-box">
+                    <input id="username-field" type="text" name="username-field" required>
+                    <label>Username</label>
+                </div>
+                <div class="user-box">
+                    <input id="password-field" type="password" name="password-field" required>
+                    <label>Password</label>
+                </div>
+                <input  id="csrf" type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <a id="login-button" href="#">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Login
+                </a>
+                <a id="signup-button" style="float: right" class="register-button" href="#">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Signup
+                </a>
+{#                <input id="button-submit-login-form" name="action" type="submit" style="display: none" value="login">#}
+            </form>
+        </div>
+    </div>
+{% endblock %}

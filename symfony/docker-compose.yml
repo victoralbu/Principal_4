@@ -32,7 +32,7 @@ services:
         environment:
           - PMA_HOST=mysql
           - PMA_PORT=3306
-          - PMA_USER=tutorial
+          - PMA_USER=root
           - PMA_PASSWORD=secret
 volumes:
     mysqldata: {}
