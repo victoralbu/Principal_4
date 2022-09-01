@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:300");
+
+body {
+    font-family: Lato, sans-serif;
+    font-size: 30px;
+}
+
+#table {
+    list-style: none;
+    margin: 0.5rem 0 0 0;
+    padding: 0 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(7, 9rem);
+    grid-template-rows: repeat(6, 6rem);
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+#table li {
+    background-color: #6063ef;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    transition: border-radius 0.2s;
+}
+
+#table li:hover {
+    background: linear-gradient(#5a5dec, rgba(0, 25, 101, 0.75));
+    border-radius: 13px;
+}
+
+.activeDay {
+    background: linear-gradient(#6063ef, rgba(255, 0, 200, 0.5));
+    color: white;
+}
+
+.backgroundDay {
+    background: linear-gradient(#e0e0e0, rgba(213, 213, 213, 0.75));
+    color: gray;
+}
+
+.backgroundDay:hover {
+    background: linear-gradient(#e0e0e0, rgba(213, 213, 213, 0.75)) !important;
+    color: gray !important;
+    cursor: default !important;
+    border-radius: 2px !important;
+}
+
+.inlineCalendar {
+    display: inline-flex;
+    padding-left: 6vw;
+    padding-top: 0;
+}
+
+.datePrintParagraph {
+    margin-left: 15vw;
+    margin-top: -3rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+    min-height: 75vh;
+    height: 75vh;
+    max-height: 100%;
+    min-width: 275px;
+    border-radius: 0%;
+}
+
+.datePrintParagraph::-webkit-scrollbar {
+    display: none;
+}
+
+.appointmentSubmit {
+    position: absolute;
+    background-color: #5a5dec;
+    width: 300px;
+    text-align: center;
+    margin-left: 77.3vw;
+    margin-top: 50px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.appointmentSubmit:hover {
+    cursor: grab;
+    background: linear-gradient(#5a5dec, rgba(0, 25, 101, 0.75));
+    color: #f5efed;
+}
+
+.chooseSection {
+    font-size: 25px;
+    margin-top: 50px;
+    margin-left: 6vw;
+}
+
+.appointment {
+    text-align: center;
+    background: linear-gradient(217deg, #5A5DECBF, rgba(255,0,0,0) 70.71%),
+    linear-gradient(127deg, rgba(0, 38, 176, 0.75), rgba(0,255,0,0) 70.71%),
+    linear-gradient(336deg, #FF00C87F, rgba(0,0,255,0) 70.71%);
+    margin-bottom: 1rem;
+    border-radius: 3%;
+    padding: 1rem 1rem 1rem 1rem;
+    width: 18vw;
+}
+
+.profilePicture {
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.appointment_name {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.appointment_address {
+    font-size: 35px;
+}
+
+.appointment_city {
+    font-size: 25px;
+}
+
+html {
+    overflow-y: hidden;
+}
+
+.swal html {
+    overflow-y: scroll;
+}
+
+ol#weekDays {
+    list-style: none;
+    margin-left: 6vw;
+    margin-top: 5rem;
+    display: grid;
+    grid-template-columns: repeat(7, 9rem);
+    text-align: center;
+    gap: 0.5rem;
+}
+
+ol#weekDays li {
+    border-radius: 5px;
+    background-color: #2d30b0;
+    color: wheat;
+    font-weight: bold;
+}
+
+.deleteAppointment {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.75);
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+.deleteAppointment:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+img{
+    width: 100%;
+    max-width:250px;
+    height: 100%;
+    max-height: 250px;
+}

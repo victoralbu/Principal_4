@@ -8,8 +8,6 @@ use App\Security\Authenticator;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -19,7 +17,7 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
-class RegistrationController extends AbstractController
+class RegistrationController extends MyAbstractController
 {
     private EmailVerifier $emailVerifier;
 
@@ -31,6 +29,10 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, Authenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
+        if($this->isLoggedIn()){
+           return $this->redirectToRoute('home');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -44,13 +46,15 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->setProfilePicture("assets/images/pp1.jpg");
+
             $entityManager->persist($user);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('calendar.auto.mail', 'Zeus'))
+                    ->from(new Address('calendar.auto.mail@gmail.com', 'Zeus'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')

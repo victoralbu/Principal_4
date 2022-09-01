@@ -1,4 +1,112 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/styles/calendar.css') }}"> {% endblock %}
+{% block javascripts %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/JavaScript" src="https://MomentJS.com/downloads/moment.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> {# TODO: do it with encore #}
+    <script src="{{ asset('assets/scripts/monthGenerator.js') }}" defer></script>
+    <script src="{{ asset('assets/scripts/calendarAddEventListeners.js') }}" defer></script>
+    <script src="{{ asset('assets/scripts/customAlerts.js') }}" defer></script>
+    <script src="{{ asset('assets/scripts/calendar.js') }}" defer></script>
+{% endblock %}
 {% block home %}
-    <div> HOME PAGE</div>
+    <div id="appointmentSubmit" class="appointmentSubmit" style="visibility: hidden">Make Appointment</div>
+    <div class="chooseSection">
+        <label for="months" class="monthLabel">Choose a month:</label>
+        <select name="months" id="months" class="months">
+            <option value="1" class="month">January</option>
+            <option value="2" class="month">February</option>
+            <option value="3" class="month">March</option>
+            <option value="4" class="month">April</option>
+            <option value="5" class="month">May</option>
+            <option value="6" class="month">June</option>
+            <option value="7" class="month">July</option>
+            <option value="8" class="month">August</option>
+            <option value="9" class="month">September</option>
+            <option value="10" class="month">October</option>
+            <option value="11" class="month">November</option>
+            <option value="12" class="month">December</option>
+        </select>
+
+        <label for="years" class="monthLabel" style="padding-left: 3.5vw;">Choose a year:</label>
+        <select name="years" id="years" class="years">
+            <option value="2020" class="year" data-date="2020">2020</option>
+            <option value="2021" class="year" data-date="2021">2021</option>
+            <option value="2022" class="year" data-date="2022">2022</option>
+            <option value="2023" class="year" data-date="2023">2023</option>
+            <option value="2024" class="year" data-date="2024">2024</option>
+        </select>
+
+        <label for="locations" class="locationSelector" style="padding-left: 3.5vw;">Choose a location:</label>
+        <select name="locations" id="locations" class="months">
+            {% for location in locations %}
+                <option value="{{ location.id }}">{{ location.city }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <ol id="weekDays">
+        <li data-col="1" data-row="1">S</li>
+        <li data-col="2" data-row="1">M</li>
+        <li data-col="3" data-row="1">T</li>
+        <li data-col="4" data-row="1">W</li>
+        <li data-col="5" data-row="1">T</li>
+        <li data-col="6" data-row="1">F</li>
+        <li data-col="7" data-row="1">S</li>
+    </ol>
+    <div class="inlineCalendar">
+        <ol id="table">
+            <li class="day" data-col="1" data-row="1"></li>
+            <li class="day" data-col="2" data-row="1"></li>
+            <li class="day" data-col="3" data-row="1"></li>
+            <li class="day" data-col="4" data-row="1"></li>
+            <li class="day" data-col="5" data-row="1"></li>
+            <li class="day" data-col="6" data-row="1"></li>
+            <li class="day" data-col="7" data-row="1"></li>
+
+            <li class="day" data-col="2" data-row="2"></li>
+            <li class="day" data-col="1" data-row="2"></li>
+            <li class="day" data-col="3" data-row="2"></li>
+            <li class="day" data-col="4" data-row="2"></li>
+            <li class="day" data-col="5" data-row="2"></li>
+            <li class="day" data-col="6" data-row="2"></li>
+            <li class="day" data-col="7" data-row="2"></li>
+
+            <li class="day" data-col="1" data-row="3"></li>
+            <li class="day" data-col="2" data-row="3"></li>
+            <li class="day" data-col="3" data-row="3"></li>
+            <li class="day" data-col="4" data-row="3"></li>
+            <li class="day" data-col="5" data-row="3"></li>
+            <li class="day" data-col="6" data-row="3"></li>
+            <li class="day" data-col="7" data-row="3"></li>
+
+            <li class="day" data-col="1" data-row="4"></li>
+            <li class="day" data-col="2" data-row="4"></li>
+            <li class="day" data-col="3" data-row="4"></li>
+            <li class="day" data-col="4" data-row="4"></li>
+            <li class="day" data-col="5" data-row="4"></li>
+            <li class="day" data-col="6" data-row="4"></li>
+            <li class="day" data-col="7" data-row="4"></li>
+
+            <li class="day" data-col="1" data-row="5"></li>
+            <li class="day" data-col="2" data-row="5"></li>
+            <li class="day" data-col="3" data-row="5"></li>
+            <li class="day" data-col="4" data-row="5"></li>
+            <li class="day" data-col="5" data-row="5"></li>
+            <li class="day" data-col="6" data-row="5"></li>
+            <li class="day" data-col="7" data-row="5"></li>
+
+            <li class="day" data-col="1" data-row="6"></li>
+            <li class="day" data-col="2" data-row="6"></li>
+            <li class="day" data-col="3" data-row="6"></li>
+            <li class="day" data-col="4" data-row="6"></li>
+            <li class="day" data-col="5" data-row="6"></li>
+            <li class="day" data-col="6" data-row="6"></li>
+            <li class="day" data-col="7" data-row="6"></li>
+
+        </ol>
+        <p id="datePrintParagraph" class="datePrintParagraph">Hello! Click on a day!</p>
+    </div>
+    </section>
 {% endblock %}
