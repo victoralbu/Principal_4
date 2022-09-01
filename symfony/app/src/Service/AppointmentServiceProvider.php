@@ -1,11 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Service;
 
 use App\Entity\Appointment;
 use App\Entity\Location;
-use App\Entity\User;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
