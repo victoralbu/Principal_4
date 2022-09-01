@@ -43,13 +43,6 @@ class AppointmentsController extends MyAbstractController
 
             $appointment = new Appointment();
 
-//            $appointment->fill([
-//                "user" => $user,
-//                'date_start' => "s",
-//                'date_end' => \DateTime::createFromFormat('Y-m-d', $requestParsedBody['date_end']),
-//                "location" => $location,
-//            ]);
-
             $appointment->setUser($user);
             $appointment->setDateStart(\DateTime::createFromFormat('Y-m-d', $requestParsedBody->get('date_start')));
             $appointment->setLocation($location);
@@ -64,4 +57,3 @@ class AppointmentsController extends MyAbstractController
         return new JsonResponse($appointmentServiceProvider->errorMessage);
     }
 }
-
