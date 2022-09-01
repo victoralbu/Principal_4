@@ -75,14 +75,14 @@ function printAppointments(appointments, date) {
         }
         document.getElementById('deleteAppointment')?.addEventListener("click", e => {
             axios({
-                method: 'get',
+                method: 'GET',
                 url: '/deleteAppointment',
                 params: {
                     appointmentId: appointmentIdToDelete,
                     appointmentDate: date,
                 }
             }).then(function (response) {
-                if (response.data === null) {
+                if (response.data['state'] === 'good') {
                     axiosSendGetParams(date, document.getElementById('locations').value, 0);
                     customAlertSuccess('Appointment deleted successfully!');
                 } else {

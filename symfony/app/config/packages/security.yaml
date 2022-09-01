@@ -22,6 +22,11 @@ security:
             logout:
                 path: /logout
             custom_authenticator: App\Security\Authenticator
+            remember_me:
+                secret: '%kernel.secret%' # required
+                lifetime: 604800 # 1 week in seconds
+                token_provider:
+                    doctrine: true
                 # where to redirect after logout
                 # target: app_any_route
 

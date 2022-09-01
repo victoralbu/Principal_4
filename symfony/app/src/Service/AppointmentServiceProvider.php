@@ -6,14 +6,20 @@ use App\Entity\Appointment;
 use App\Entity\Location;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Security;
 
 class AppointmentServiceProvider
 {
     public string $errorMessage;
 
-    function prepareAppointmentsForJson(array $appointments, int $authUserId): array
+    public function __construct(protected Security $security, protected EntityManagerInterface $db)
     {
+    }
+
+    function prepareAppointmentsForJson(array $appointments): array
+    {
+        $loggedUserId = $this->security->getUser()->getId();
+
         $data = [];
         foreach ($appointments as $appointment) {
             $data[] = [
@@ -23,45 +29,42 @@ class AppointmentServiceProvider
                 "location_address" => $appointment->getLocation()->getAddress(),
                 "location_city" => $appointment->getLocation()->getCity(),
                 "profile_picture" => $appointment->getUser()->getProfilePicture(),
-                "isAppointmentFromLoggedInUser" => $this->isAppointmentFromLoggedInUser($appointment->getUser()->getId(), $authUserId),
+                "isAppointmentFromLoggedInUser" => $appointment->getUser()->getId() === $loggedUserId,
             ];
         }
         return $data;
     }
 
-    protected function isAppointmentFromLoggedInUser(int $userId, int $authUserId): bool
+    public function validate(Request $request): bool
     {
-        return $authUserId === $userId;
-    }
+        $requestBody = $request->request;
 
-    public function validate(Request $request, EntityManagerInterface $db, UserInterface $user): bool
-    {
-        $requestParsedBody = $request->request;
+        $locationEntity = $this->db->getRepository(Location::class);
 
-        $locationEntity = $db->getRepository(Location::class);
+        $appointmentEntity = $this->db->getRepository(Appointment::class);
 
-        $appointmentEntity = $db->getRepository(Appointment::class);
+        if (date("Y-m-d") <= date("Y-m-d", strtotime($requestBody->get('date_start')))) {
 
-        if (date("Y-m-d") <= date("Y-m-d", strtotime($requestParsedBody->get('date_start')))) {
+            $user = $this->security->getUser();
 
-            $location = $locationEntity->findOneBy(['id' => $requestParsedBody->get('id_location')]);
+            $location = $locationEntity->findOneBy(['id' => $requestBody->get('id_location')]);
 
             $maxCapacity = $location->getCapacity();
 
             $appointmentsMadeByThisUser = $appointmentEntity->count([
                 'user' => $user,
-                'date_start' => \DateTime::createFromFormat('Y-m-d', $requestParsedBody->get('date_start')),
+                'date_start' => \DateTime::createFromFormat('Y-m-d', $requestBody->get('date_start')),
             ]);
 
             $numberOfAppointmentsOnThisDay = $appointmentEntity->count([
-                'date_start' => \DateTime::createFromFormat('Y-m-d', $requestParsedBody->get('date_start')),
+                'date_start' => \DateTime::createFromFormat('Y-m-d', $requestBody->get('date_start')),
                 'location' => $location,
             ]);
 
             $capacityLeft = $maxCapacity - $numberOfAppointmentsOnThisDay;
 
             if ($appointmentsMadeByThisUser > 0) {
-                $this->errorMessage = 'You already made an appointment on ' . $requestParsedBody->get('date_start');
+                $this->errorMessage = 'You already made an appointment on ' . $requestBody->get('date_start');
                 return false;
             } else if ($capacityLeft <= 0) {
                 $this->errorMessage = 'The max capacity of this location ( ' . $maxCapacity . ' ) has already been exceeded!';
