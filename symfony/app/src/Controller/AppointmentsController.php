@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Appointment;
 
 use App\Entity\Location;
+use App\Service\AppointmentServiceProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
